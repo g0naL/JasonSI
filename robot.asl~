@@ -22,7 +22,7 @@ too_much(B) :-
 
 +!medicineRoulette(X) : true & medicine(X,Y)
 	<- .random([1,2,3,4,5], R);
-	   if (R == 5) {
+	   if (R < 5) {
 	   		.println("I am responsible for ", X);
 	   	    !toOwnerMed(X,1);
 	   } else {
@@ -34,10 +34,6 @@ too_much(B) :-
 +!toOwnerMed(X,C) : true & startTime(H,M,S,MS) & .time(_,_,_,MS) & medicine(X,Y)
 	<-  .wait(1);
 		if(C mod (Y + (Y/2)) == 0){
-			!go_at(robot,medkit);
-			open(medkit);
-		    -energy(N);
-  	        +energy(N-1);
 			!spoiledMed(X);
 			!toOwnerMed(X,C+1);
 		} else{
@@ -72,7 +68,7 @@ too_much(B) :-
 
 -!medWalkOwner(X) : true & not availableMed(med,medkit) 
 	<- !go_at(robot,delivery);
-   	   .send(supplier, achieve, order(med,3));
+   	   .send(proveedor, achieve, order(med,3));
 	   .println("I´m asking for more medicines");
 	   .wait(5000);
 	   .println("I´m picking up the medicines");
@@ -88,14 +84,16 @@ too_much(B) :-
 		.print("here´s your ", X);
 		!go_at(robot,fridge).
 		
-+!spoiledMed(X) : true & available(med,medkit)
-	<-  .println(X, " has spoiled!");
++!spoiledMed(X) : true
+	<- .println(X, " has spoiled!");
+		!go_at(robot,medkit);
+		open(medkit);
 		.println("I´m removing ", X, " from the medkit");
 		take(med);
 		close(medkit);
 		!go_at(robot,delivery);
 		.println("Putting this spoiled medicine in the trash");
-		.send(supplier, achieve, order(med,1));
+		.send(proveedor, achieve, order(med,1));
 		.println("I´m asking for more medicines");
 	    .wait(5000);
 	    .println("I´m picking up the medicines");
@@ -104,9 +102,6 @@ too_much(B) :-
 	    .println("Meds delivered");
 	    close(medkit);
 		!go_at(robot,fridge).
-		
--!spoiledMed(X) : true & not availableMed(med,medkit)
-	<- .println("Oh, there´s no medicines on the medkit, nothing can spoil").
 
 +medTaken : true
 	<- !go_at(robot,medkit);
@@ -181,7 +176,7 @@ too_much(B) :-
    :  N > 0 & not available(med,medkit)
    <- -+available(med,medkit). 
 
-+delivered(med,_Qtd,_OrderId)[source(supplier)]
++delivered(med,_Qtd,_OrderId)[source(proveedor)]
   :  true
   <- +availableMed(med,medkit).
 		

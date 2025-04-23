@@ -201,11 +201,7 @@ public class HouseEnv extends Environment {
 		if (model.atRobot()){
 			addPercept("auxiliar", axr);
 		}
-		
-		if (lOwner.distance(model.lDelivery)<2) {
-            addPercept("owner", oad);
-        }
-		
+
         if (lRobot.distance(model.lDelivery)<2) {
             addPercept("robot", ad);
         }

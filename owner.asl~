@@ -41,6 +41,7 @@ medicine(sulbatamol,390).
 	   
 +!byMyself(X,C) : true & startTime(H,M,S,MS) & .time(_,_,_,MS) & medicine(X,Y)
 	<-  .wait(1);
+		.println(C);
 		if(C mod (Y + (Y/2)) == 0){
 			!go_at(owner,medkit);
 			open(medkit);

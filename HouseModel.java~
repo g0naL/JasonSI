@@ -212,7 +212,7 @@ public class HouseModel extends GridWorldModel {
 	boolean canMoveTo(int Ag, int x, int y) {
 		if (Ag < 1 || Ag == 2) {
 			return (isFree(x,y) && !hasObject(WASHER,x,y) && !hasObject(TABLE,x,y) &&
-		           !hasObject(SOFA,x,y) && !hasObject(CHAIR,x,y) && !hasObject(MEDIKIT,x,y) && !hasObject(DELIVERY,x,y) 
+		           !hasObject(SOFA,x,y) && !hasObject(CHAIR,x,y) && !hasObject(DELIVERY,x,y) 
 				   );
 		} else { 
 			return (isFree(x,y) && !hasObject(WASHER,x,y) && !hasObject(TABLE,x,y) && !hasObject(CHARGUER,x,y) && !hasObject(DELIVERY,x,y) && !hasObject(MEDIKIT,x,y) && !hasObject(FRIDGE,x,y));
@@ -302,6 +302,15 @@ public class HouseModel extends GridWorldModel {
 		Location r1 = getAgPos(Ag); 
         Location r2 = getAgPos(Ag); 
 		
+		Location up = r1;
+		up.y--;
+		Location down = r1;
+		down.y++;
+		Location right = r1;
+		right.x++;
+		Location left = r1;
+		left.x--;
+		
 		
 		if (r1.distance(dest) > -1) {
 			if (r1.x < dest.x && canMoveTo(Ag,r1.x+1,r1.y) && prevPos.x != (r1.x+1)) {
@@ -320,14 +329,6 @@ public class HouseModel extends GridWorldModel {
 				} else if (canMoveTo(Ag,r1.x,r1.y+1) && r1.y == dest.y) {
 				r1.y++;
 				} else if (canMoveTo(Ag,r1.x,r1.y-1) && r1.y == dest.y) { 
-				r1.y--;
-				} else if (canMoveTo(Ag,r1.x+1,r1.y)) {
-				r1.x++;
-				} else if (canMoveTo(Ag,r1.x-1,r1.y)) {
-				r1.x--;
-				} else if (canMoveTo(Ag,r1.x,r1.y+1)) {
-				r1.y++;
-				} else if (canMoveTo(Ag,r1.x,r1.y-1)) { 
 				r1.y--;
 				}
         }
@@ -466,7 +467,7 @@ public class HouseModel extends GridWorldModel {
 		}
 	}
 	
-	boolean posibilityMover(int Ag, Location dest, int e) {
+	boolean posibilidadMover(int Ag, Location dest, int e) {
 		
 		Location r1 = getAgPos(Ag);
 		
